@@ -1,0 +1,36 @@
+{
+  "name": "nodemailapi",
+  "version": "1.0.0",
+  "description": "Sample test project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r dotenv/config index",
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renjthmails/nodemailapi.git"
+  },
+  "keywords": [
+    "nodemailapi"
+  ],
+  "author": "Renjith R",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/renjthmails/nodemailapi/issues"
+  },
+  "homepage": "https://github.com/renjthmails/nodemailapi#readme",
+  "dependencies": {
+    "@sendgrid/mail": "^7.1.1",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.0.0",
+    "jasmine-node": "^3.0.0",
+    "jasmine-xml-reporter": "^1.2.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "jasmine": "^3.5.0",
+    "jasmine-pretty-html-reporter": "^0.2.5"
+  }
+}
