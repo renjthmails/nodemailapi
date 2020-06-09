@@ -1,4 +1,4 @@
-var app=require("../../clients/dummyClient");
+var app=require("../../services/dummyClient");
 describe("Verifying sendEmail via dummyClient",function(){
     var args; 
     beforeEach(function () {

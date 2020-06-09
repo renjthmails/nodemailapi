@@ -1,4 +1,4 @@
-var app = require("../../clients/sendGridClient");
+var app = require("../../services/sendGridClient");
 
 describe("Verifying sendEmail via sendGridClient",function(){   
     var args; 
