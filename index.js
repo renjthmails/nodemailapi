@@ -1,70 +1,47 @@
 var express = require('express');
-var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
-const sendGridClient  = require('./clients/sendGridClient');
-const dummyClient  = require('./clients/dummyClient');
+const sendGridClient  = require('./services/sendGridClient');
+const dummyClient  = require('./services/dummyClient');
 const app = express();
 const port = process.env.PORT || 4000;
 
+app.get('/', (req, res) => { 
+  res.send('Use /sendemail api to send email');
+});
 
-var schema = buildSchema(`
-  type Query {
-    sendEmail(to: String, subject: String, text: String, html: String) : Boolean
-  }
-`);
-
-
-var root = { 
-    sendEmail: (args) => {
-        args.from = 'renjithmails@gmail.com';
-        var result = sendGridClient.sendEmail(args);
-        return result.then((res) => 
-                            {
-                              console.log("sendGridClient Send: " + res);
-                              return 'Send via sendGrid';
-                            }, 
-                        (err) => {                      
-                        console.log("sendGridClient Send: " + err);
-                        dummyClient.sendEmail(args)
-                                  .then((res1) => 
-                                  {
-                                    console.log("dummyClient Send: " + res1);
-                                    return 'Send via dummyClient';
-                                  },
-                                    (err1) => 
-                                    {
-                                      console.log("dummyClient Send: " + err1)
-                                      return 'Sending failed';
-                                    })
-                                }
-                          ); 
-        //return result;
-    }
-};
-
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: true,
-}));
-app.listen(port, () => console.log(`Now browse to localhost:${port}/graphql`));
-
-/*app.get('/', (req, res) => {
-    sendGridMail.setApiKey(key);
-    const msg = {
-        
+app.get('/sendemail', (req, res) => {  
+    if(req.path === '/sendemail'){
+    const args = {
+        from: 'renjithmails@gmail.com',
+        to: req.query.to,
+        subject: req.query.subject,
+        body: req.query.body,
+        html: req.query.html
       };
-
-    sendGridMail
-    .send(msg)
-    .then(() => {}, error => {
-        console.error(error);
-        if (error.response) {
-            console.error(error.response.body)
-        }
-    });
-    res.send('Hello World!');
+      var result = sendGridClient.sendEmail(args);   
+      
+      result.then((res1) => 
+      {
+        console.log("sendGridClient Send: " + res1);
+        res.send(`Send via sendGrid ${res1[0]}`);
+      }, 
+      (err) => {                      
+      console.log("sendGridClient Send: " + err);
+      dummyClient.sendEmail(args)
+                .then((res1) => 
+                {
+                  console.log("dummyClient Send: " + res1);
+                  res.send('Send via dummyClient');
+                },
+                  (err1) => 
+                  {
+                    console.log("dummyClient Send: " + err1)
+                    res.send('Sending failed');
+                  })
+              }
+        );         
+      }      
 });
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
-*/
+
+
