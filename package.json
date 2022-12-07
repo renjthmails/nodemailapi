@@ -22,7 +22,7 @@
   "homepage": "https://github.com/renjthmails/nodemailapi#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.1.1",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "express-graphql": "^0.9.0",
     "graphql": "^15.0.0",
     "index.js": "0.0.3",
